@@ -1,6 +1,6 @@
 # IST Workshop: Build a CLI Tool with AI Agents
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/crimson206/ist-codespace?quickstart=1)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/microwiseai/ist-codespace?quickstart=1)
 
 Build a working CLI tool in 30 minutes without writing code. Use AI agent sessions to go from product spec to finished tool.
 
