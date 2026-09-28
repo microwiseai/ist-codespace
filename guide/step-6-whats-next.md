@@ -2,13 +2,24 @@
 
 ## Install IST on Your Machine
 
-Take IST beyond Codespaces. Install it locally:
+Take IST beyond Codespaces. Install it locally the same way this Codespace image does.
+
+Prerequisites: tmux, Node.js/npm, and Claude Code (`npm install -g @anthropic-ai/claude-code`).
 
 ```bash
-npx @microwiseai/ist-setup
+npm install -g @microwiseai/snapshot
+snapshot install @ist/beta
 ```
 
 This installs the full IST toolkit: `isesh`, `imessenger`, `smon`, `ilogsession`, and more.
+
+Check that it landed:
+
+```bash
+isesh --version
+```
+
+For installation details, see the [installation guide](https://docs.ist.microwiseai.com/docs/installation/).
 
 ## Try With Your Own Project
 
@@ -31,8 +42,7 @@ The same pattern works for any project:
 
 ## Resources
 
-- **IST GitHub:** [github.com/microwiseai/ist](https://github.com/microwiseai/ist)
-- **IST Documentation:** [ist.microwise.ai](https://ist.microwise.ai)
-- **Report Issues:** [github.com/microwiseai/ist/issues](https://github.com/microwiseai/ist/issues)
+- **IST Documentation:** [docs.ist.microwiseai.com](https://docs.ist.microwiseai.com/)
+- **Feedback & questions:** [github.com/microwiseai/feedback](https://github.com/microwiseai/feedback) — Discussions (questions & ideas) / Issues (bugs)
 
 Thanks for completing the workshop!
