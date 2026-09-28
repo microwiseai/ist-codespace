@@ -12,7 +12,7 @@ claude login                      # Claude Pro/Max subscription (no API key)
 export ANTHROPIC_API_KEY=sk-ant-...
 ```
 
-(Optional) To enable live monitoring / auto-approval, run the one-time Google
+(Optional) To enable auto-approval and the web dashboard, run the one-time Google
 sign-in: `detector-agent login`.
 
 ## Start the Manager Session

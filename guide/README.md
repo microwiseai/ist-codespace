@@ -6,12 +6,12 @@ Welcome to the IST Workshop. You'll use AI agent sessions to build **quicktool**
 
 - **IST Sessions** - Start and manage AI coding sessions with `isesh`
 - **TDA Pattern** - The Manager-Worker pattern where a manager session delegates tasks to worker sessions
-- **Real-time Monitoring** - Watch multiple AI agents build code simultaneously with `smon` and `ilogsession`
+- **Monitoring** - `smon` tracks each worker's state (idle, permission requests, exits) and relays it to the manager session; `ilogsession` lets you follow each worker's log as it works
 
 ## Prerequisites
 
 - A GitHub account (you're already in a Codespace, so you have this)
-- An account for a CLI AI tool (Claude, Codex, Gemini, etc.)
+- An account for a CLI AI tool (Claude Code or Codex)
 
 ## Log In to Your CLI AI Tool
 
@@ -25,11 +25,12 @@ claude
 Follow the login prompt (a Claude Max subscription works — no API key required).
 You can also run `claude login` directly, or use an API key instead with
 `export ANTHROPIC_API_KEY=sk-ant-...`. Other tools work the same way, e.g.
-`codex` or `gemini`.
+`codex`.
 
-**Optional — live monitoring & auto-approval:** the real-time monitoring tools
-(`smon`) can auto-approve agent prompts once you link this Codespace to your IST
-account with a one-time interactive Google sign-in:
+**Optional — auto-approval & web dashboard:** once you link this Codespace to
+your IST account with a one-time interactive Google sign-in, `smon` can
+auto-approve routine agent prompts and pass everything else to the manager, and
+you can watch your sessions live in the web dashboard at https://ism.microwiseai.com:
 
 ```bash
 detector-agent login

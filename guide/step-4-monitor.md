@@ -2,7 +2,7 @@
 
 **Goal:** Watch AI agents write code live. This is the WOW moment.
 
-## Open the Session Monitor
+## Start the Session Monitor
 
 In a separate terminal:
 
@@ -10,7 +10,9 @@ In a separate terminal:
 smon watch 'mgr-*' -n mgr -d
 ```
 
-This opens a live dashboard showing all sessions matching `mgr-*`. You'll see each worker's status, what tool they're currently using, and their progress.
+This starts `smon` in the background. It tracks the state of every session matching `mgr-*` and relays it to the manager session `mgr` (`-n mgr`): when a worker goes idle, hits a permission request that needs a decision, or exits, the manager is told right away instead of having to poll. `smon` reports to the manager, not to you.
+
+To watch the sessions yourself, tail the worker logs below. If you ran `detector-agent login`, you can also see live session status in the web dashboard at https://ism.microwiseai.com.
 
 ## Tail Individual Worker Logs
 

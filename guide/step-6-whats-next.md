@@ -37,7 +37,7 @@ The same pattern works for any project:
 | `isesh start <name>` | Start a new AI session |
 | `isesh list` | List active sessions |
 | `imessenger send <name> "..."` | Send a message to a session |
-| `smon watch '<pattern>'` | Monitor sessions live |
+| `smon watch '<pattern>'` | Track session state and relay events to the manager |
 | `ilogsession tail <name>` | Stream a session's log |
 
 ## Resources

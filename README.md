@@ -20,7 +20,7 @@ Build a working CLI tool in 30 minutes without writing code. Use AI agent sessio
 
 1. Click the **Open in GitHub Codespaces** badge above
 2. Log in to the Claude CLI — **either** `claude login` (Pro/Max) **or** `export ANTHROPIC_API_KEY=sk-ant-...`
-3. (Optional, for live monitoring / auto-approval) run `detector-agent login` once — an interactive Google sign-in
+3. (Optional, for auto-approval and the web dashboard at https://ism.microwiseai.com) run `detector-agent login` once — an interactive Google sign-in
 4. Follow the [workshop guide](guide/README.md)
 
 > The `isesh` toolchain, `snapshot`, and `claude-code` are **pre-installed in the
