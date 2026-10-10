@@ -24,8 +24,18 @@ claude
 
 Follow the login prompt (a Claude Max subscription works — no API key required).
 You can also run `claude login` directly, or use an API key instead with
-`export ANTHROPIC_API_KEY=sk-ant-...`. Other tools work the same way, e.g.
-`codex`.
+`export ANTHROPIC_API_KEY=sk-ant-...`.
+
+**Using OpenAI Codex instead?** Codex is pre-installed too. Log in with your
+ChatGPT plan using the device-code flow (works inside a Codespace):
+
+```bash
+codex login --device-auth
+```
+
+Or use an OpenAI API key: `printenv OPENAI_API_KEY | codex login --with-api-key`
+(after `export OPENAI_API_KEY=sk-...`). No keys are baked into this Codespace —
+you always log in yourself.
 
 **Optional — auto-approval & web dashboard:** once you link this Codespace to
 your IST account with a one-time interactive Google sign-in, `smon` can

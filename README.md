@@ -14,16 +14,18 @@ Build a working CLI tool in 30 minutes without writing code. Use AI agent sessio
 ## Prerequisites
 
 - A GitHub account
-- A way to authenticate the Claude CLI — **either** a Claude Pro/Max subscription (`claude login`) **or** an [Anthropic API key](https://console.anthropic.com/)
+- A way to authenticate an AI CLI (both are pre-installed):
+  - **Claude Code** — a Claude Pro/Max subscription (`claude login`) **or** an [Anthropic API key](https://console.anthropic.com/)
+  - **OpenAI Codex** — a ChatGPT plan (`codex login --device-auth`) **or** an [OpenAI API key](https://platform.openai.com/api-keys)
 
 ## Quick Start
 
 1. Click the **Open in GitHub Codespaces** badge above
-2. Log in to the Claude CLI — **either** `claude login` (Pro/Max) **or** `export ANTHROPIC_API_KEY=sk-ant-...`
+2. Log in to your AI CLI — Claude Code: `claude login` (Pro/Max) **or** `export ANTHROPIC_API_KEY=sk-ant-...`; Codex: `codex login --device-auth` **or** `printenv OPENAI_API_KEY | codex login --with-api-key`
 3. (Optional, for auto-approval and the web dashboard at https://ism.microwiseai.com) run `detector-agent login` once — an interactive Google sign-in
 4. Follow the [workshop guide](guide/README.md)
 
-> The `isesh` toolchain, `snapshot`, and `claude-code` are **pre-installed in the
+> The `isesh` toolchain, `snapshot`, `claude-code`, and `codex` are **pre-installed in the
 > Codespace image** — no tokens or private registries are used. Enable
 > [Prebuilds](#speeding-up-with-prebuilds) so re-opening is fast.
 

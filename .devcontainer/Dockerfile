@@ -11,18 +11,19 @@ RUN apt-get update \
 
 # --- Heavy installs baked into the image so Codespaces Prebuild caches them ---
 # NOTE: These come from PUBLIC npmjs.org. No token, no private registry, no secret.
-#   - @anthropic-ai/claude-code : AI CLI used by the workshop
+#   - @anthropic-ai/claude-code : AI CLI used by the workshop (Claude Code)
+#   - @openai/codex             : AI CLI used by the workshop (OpenAI Codex)
 #   - @microwiseai/snapshot     : public installer (latest on npmjs.org)
 # Run as the non-root `node` user so global installs land in the user's prefix
 # and `isesh` / `itda` are on PATH at runtime.
 USER node
 
-RUN npm install -g @anthropic-ai/claude-code @microwiseai/snapshot
+RUN npm install -g @anthropic-ai/claude-code @openai/codex @microwiseai/snapshot
 
 # `snapshot install @ist/beta` pulls the ist bundle from the PUBLIC snapshot
 # registry anonymously (verified: no token required). Baking it here means the
 # Prebuild caches it and re-opening a Codespace is fast.
 RUN snapshot install @ist/beta
 
-# Sanity: fail the build early if the ist CLI didn't land.
-RUN isesh --version
+# Sanity: fail the build early if the ist CLI or an AI CLI didn't land.
+RUN isesh --version && claude --version && codex --version

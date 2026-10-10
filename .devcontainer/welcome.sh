@@ -11,17 +11,22 @@ cat <<'BANNER'
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 
-  isesh / snapshot / claude-code are already installed in this image.
+  isesh / snapshot / claude-code / codex are already installed in this image.
 
   ─────────────────────────────────────────────────────────────────
   START HERE:  guide/README.md
   ─────────────────────────────────────────────────────────────────
 
-  STEP 1 — Log in to your AI CLI (needed before agents can run):
+  STEP 1 — Log in to your AI CLI (needed before agents can run).
+           Pick one (or both) — nothing is injected, you log in yourself:
 
-     claude login                 # Claude Pro/Max subscription
+     claude login                 # Claude Code — Claude Pro/Max subscription
      #   ...or use an API key:
      export ANTHROPIC_API_KEY=sk-ant-...
+
+     codex login --device-auth    # OpenAI Codex — ChatGPT plan (device code)
+     #   ...or use an API key (read from stdin):
+     printenv OPENAI_API_KEY | codex login --with-api-key
 
   STEP 2 — (optional) Enable monitoring / auto-approval, one time:
 

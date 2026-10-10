@@ -16,7 +16,7 @@
     }
   },
 
-  // Everything heavy (claude-code, snapshot, `snapshot install @ist/beta`) is
+  // Everything heavy (claude-code, codex, snapshot, `snapshot install @ist/beta`) is
   // baked into the image via the Dockerfile, so Codespaces Prebuild caches it
   // and re-opening is fast. postAttachCommand only prints the welcome/next-steps
   // banner — it must stay lightweight because it runs on every attach.

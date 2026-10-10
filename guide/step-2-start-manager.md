@@ -2,14 +2,22 @@
 
 **Goal:** Launch a TDA manager session that will coordinate the build.
 
-## Log In to Claude
+## Log In to Your AI CLI
 
-If you haven't already, authenticate the Claude CLI. Use **either** option:
+If you haven't already, authenticate the AI CLI you'll use. **Claude Code:**
 
 ```bash
 claude login                      # Claude Pro/Max subscription (no API key)
 # ...or, with an API key instead:
 export ANTHROPIC_API_KEY=sk-ant-...
+```
+
+**OpenAI Codex:**
+
+```bash
+codex login --device-auth         # ChatGPT plan, device-code sign-in
+# ...or, with an API key instead:
+printenv OPENAI_API_KEY | codex login --with-api-key
 ```
 
 (Optional) To enable auto-approval and the web dashboard, run the one-time Google
