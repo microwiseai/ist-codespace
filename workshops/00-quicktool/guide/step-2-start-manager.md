@@ -25,14 +25,21 @@ sign-in: `detector-agent login`.
 
 ## Start the Manager Session — in the IST UI
 
-The IST UI opens automatically in a browser tab when the Codespace starts (port
-7788). Lost the tab? **Ports** panel → `7788` → globe icon, or run `ist-ui url`.
+The IST UI opens automatically in a browser tab when the Codespace starts (port **7788**). It opens on the **Setup** tab
+while Claude Code / Codex still needs a login (the tab shows a **!** badge), otherwise on
+**Managers**. Lost the tab? **Ports** panel → `7788` → globe icon, or run `ist-ui url`.
 
-1. **Setup** tab — check that your AI CLI shows as logged in (fix it there or with `claude login` / `codex login --device-auth`).
-2. **Managers** tab → **▶ Start a manager in this folder**.
-3. In the dialog, set the folder to the quicktool project:
-   `/workspaces/ist-codespace/workshops/00-quicktool/project`
-   (or click **Use another folder** and paste it). Keep the suggested name (e.g. `project-mgr`) or pick any name — the prompt works with whatever the manager is called. Start it.
+1. **Setup** tab — the **Claude Code** or **Codex CLI** card should say **Ready**; if not,
+   log in right there. (The **IST account (detector-agent)** card is optional — it enables
+   auto-approval and the web dashboard.)
+2. **Managers** tab → **＋ New manager**. (No managers yet? Under the big
+   **▶ Start a manager in this folder** button, click **Use another folder**.)
+3. In **Start a new manager**, set **Folder (full path)** to
+   `/workspaces/ist-codespace/workshops/00-quicktool/project`.
+   Keep the suggested **Name** (e.g. `project-mgr`) or type any name — the prompt works with
+   whatever the manager is called. Click **▶ Start**.
+4. On the manager's row, click **Copy attach command**, paste it into a VS Code terminal
+   (`` Ctrl+` ``) and press Enter — that's the manager's chat.
 
 <details>
 <summary>CLI equivalent (works even if the UI isn't installed yet)</summary>
@@ -53,7 +60,7 @@ Open the manager prompt and copy its contents:
 cat workshops/00-quicktool/project/manager-prompt.md
 ```
 
-Paste the entire contents into the manager session. The manager will:
+Paste the entire contents into the manager session (the terminal you attached in step 4 above). The manager will:
 
 1. Read `project-brief.md` to understand the product
 2. Create a worker for the CLI framework (Phase 1)
@@ -68,6 +75,6 @@ You just kick it off. The manager handles the rest.
 isesh list
 ```
 
-You should see your manager (e.g. `project-mgr`) in the list with status `active` (it also shows as running in the UI's **Managers** tab).
+You should see your manager (e.g. `project-mgr`) in the list with status `active` (in the UI's **Managers** tab its row shows **Running**).
 
 Next: [Step 3: Watch workers get created](step-3-create-workers.md)

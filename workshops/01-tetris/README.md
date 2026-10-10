@@ -47,13 +47,21 @@ that's what lets them work at the same time.
 
 ### 2. Start the manager — in the IST UI (2 min)
 
-The IST UI opens in a browser tab when the Codespace starts (port **7788**). Lost the
-tab? **Ports** panel → `7788` → globe icon, or run `ist-ui url`.
+The IST UI opens in a browser tab when the Codespace starts (port **7788**). It opens on the **Setup** tab
+while Claude Code / Codex still needs a login (the tab shows a **!** badge), otherwise on
+**Managers**. Lost the tab? **Ports** panel → `7788` → globe icon, or run `ist-ui url`.
 
-1. **Setup** tab — confirm your AI CLI is logged in.
-2. **Managers** tab → **▶ Start a manager in this folder**.
-3. Set the folder to `/workspaces/ist-codespace/workshops/01-tetris/project`
-   (or **Use another folder** and paste it). Keep the suggested name (e.g. `project-mgr`) or pick any name — the prompt works with whatever the manager is called. Start it.
+1. **Setup** tab — the **Claude Code** or **Codex CLI** card should say **Ready**; if not,
+   log in right there. (The **IST account (detector-agent)** card is optional — it enables
+   auto-approval and the web dashboard.)
+2. **Managers** tab → **＋ New manager**. (No managers yet? Under the big
+   **▶ Start a manager in this folder** button, click **Use another folder**.)
+3. In **Start a new manager**, set **Folder (full path)** to
+   `/workspaces/ist-codespace/workshops/01-tetris/project`.
+   Keep the suggested **Name** (e.g. `project-mgr`) or type any name — the prompt works with
+   whatever the manager is called. Click **▶ Start**.
+4. On the manager's row, click **Copy attach command**, paste it into a VS Code terminal
+   (`` Ctrl+` ``) and press Enter — that's the manager's chat.
 
 <details>
 <summary>CLI equivalent</summary>
@@ -68,7 +76,7 @@ isesh list          # project-mgr → active
 ### 3. Paste the manager prompt (1 min)
 
 Copy all of [`project/manager-prompt.md`](project/manager-prompt.md) (everything below the
-`---`) and paste it into the manager session (attach to it from the UI, or `isesh attach <manager>`).
+`---`) and paste it into the manager's terminal (the one you attached with **Copy attach command**; CLI: `isesh attach <manager>`).
 
 ### 4. Watch the team work (30–40 min)
 
@@ -82,7 +90,7 @@ Workers are named after your manager — `<manager>` below is its name (e.g. `pr
 | 2 | `<manager>-ui` | `index.html`, canvas rendering, keyboard input, the dev server |
 | 3 | manager | Runs the tests, checks the success criteria, asks you to play |
 
-Workers appear in the UI's **Managers** tab under your manager. To follow along in a terminal:
+In the UI's **Managers** tab, your manager's row counts its workers (e.g. *2 of 3 workers running*). To follow along in a terminal:
 
 <details>
 <summary>CLI monitoring</summary>

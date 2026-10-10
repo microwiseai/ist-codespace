@@ -47,7 +47,7 @@ if command -v ist-ui >/dev/null 2>&1; then
   echo "  ★ IST UI — opens automatically in a browser tab (port 7788)."
   url="$(ist-ui url 2>/dev/null)" && [ -n "$url" ] && echo "     URL: $url"
   echo "     Reopen: Ports panel → 7788 → globe icon, or run: ist-ui url"
-  echo "     Trouble? ist-ui status  (log: ~/.cache/ist-codespace/start-ui.log)"
+  echo "     Asks for a token? Open the URL from ist-ui url. Trouble? ist-ui status"
   echo "  CLI fallback: isesh start project-mgr -w ./workshops/00-quicktool/project"
 else
   echo "  The IST UI isn't in this image yet — use the CLI flow:"

@@ -15,8 +15,9 @@ New to IST? Start with **00**.
 ## The same flow every time
 
 1. Log in to your AI CLI once (see the [root README](../README.md#log-in)).
-2. In the **IST UI** (opens automatically, port 7788): **Setup** tab → **Managers** tab →
-   **▶ Start a manager in this folder**, pointing it at the workshop's `project/` folder.
+2. In the **IST UI** (opens automatically, port 7788): **Setup** tab — make sure Claude Code
+   or Codex says **Ready** → **Managers** tab → **＋ New manager** with **Folder** = the
+   workshop's `project/` folder → **▶ Start** → **Copy attach command** into a terminal.
 3. Paste `project/manager-prompt.md` into the manager.
 4. Watch the workers, then try what they built.
 
