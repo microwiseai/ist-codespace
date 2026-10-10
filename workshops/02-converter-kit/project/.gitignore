@@ -1,0 +1,4 @@
+node_modules/
+dist/
+# your own documents — keep private files out of git
+samples/private/
