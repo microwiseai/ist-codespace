@@ -26,13 +26,14 @@
     }
   },
 
-  // Everything heavy (claude-code, codex, snapshot, `snapshot install @ist/beta`) is
+  // Everything heavy (claude-code, codex, snapshot, `snapshot install @ist/beta`,
+  // ist-ui via glpkg) is
   // baked into the image via the Dockerfile, so Codespaces Prebuild caches it
   // and re-opening is fast.
   //
   // postStartCommand starts the IST UI in the background on every container
   // start (idempotent, non-blocking, never fails; log under ~/.cache/ist-codespace/).
-  // If `ist-ui` isn't in the image yet it just prints a note.
+  // If `ist-ui` is somehow missing it just prints a note.
   "postStartCommand": "bash .devcontainer/start-ui.sh",
 
   // postAttachCommand only prints the welcome/next-steps banner — it must stay

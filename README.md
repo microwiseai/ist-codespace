@@ -3,7 +3,7 @@
 A ready-to-use GitHub Codespace for trying **IST (Integrated Session Tools)**: you
 write no code — you start an AI *manager* session, paste one prompt, and watch it
 split the work across AI *worker* sessions that build real software. Everything
-(`isesh` toolchain, Claude Code, OpenAI Codex, tmux) is pre-installed.
+(`isesh` toolchain, the IST UI, Claude Code, OpenAI Codex, tmux) is pre-installed.
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/microwiseai/ist-codespace?quickstart=1)
 
@@ -38,11 +38,6 @@ ist-ui         # starts it if needed and prints the URL
 - **Never make port 7788 Public.** Keep its visibility *Private* (the default): through the
   forwarded address the UI needs no token — GitHub's sign-in is what protects it — and
   whoever reaches it can sign accounts in and out and start or stop agents.
-
-> **Until the UI ships in the public `@ist/beta` bundle**, this image may not include
-> `ist-ui` yet — the startup step just logs a note and the port stays empty. Everything
-> works from the terminal with the CLI flow (`isesh start …`); every workshop shows the
-> CLI equivalent next to the UI steps.
 
 ## Workshops
 
@@ -116,7 +111,7 @@ workshops/
   01-tetris/           # README + project/
   02-converter-kit/    # README + project/
 .devcontainer/
-  Dockerfile           # prebakes isesh / snapshot / claude-code / codex (+ ist-ui once in @ist/beta)
+  Dockerfile           # prebakes isesh / snapshot / claude-code / codex / ist-ui (via glpkg)
   devcontainer.json    # ports 7788 (IST UI) + 9876 (detector-agent login), start/attach hooks
   start-ui.sh          # postStartCommand: launches the IST UI in the background
   welcome.sh           # postAttachCommand: welcome banner

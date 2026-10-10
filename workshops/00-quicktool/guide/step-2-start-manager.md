@@ -42,7 +42,7 @@ while Claude Code / Codex still needs a login (the tab shows a **!** badge), oth
    (`` Ctrl+` ``) and press Enter — that's the manager's chat.
 
 <details>
-<summary>CLI equivalent (works even if the UI isn't installed yet)</summary>
+<summary>CLI equivalent</summary>
 
 ```bash
 cd /workspaces/ist-codespace

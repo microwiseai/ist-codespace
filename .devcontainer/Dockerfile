@@ -14,20 +14,21 @@ RUN apt-get update \
 #   - @anthropic-ai/claude-code : AI CLI used by the workshop (Claude Code)
 #   - @openai/codex             : AI CLI used by the workshop (OpenAI Codex)
 #   - @microwiseai/snapshot     : public installer (latest on npmjs.org)
+#   - @glpkg/cli                : public installer for the IST UI package (below)
 # Run as the non-root `node` user so global installs land in the user's prefix
 # and `isesh` / `itda` are on PATH at runtime.
 USER node
 
-RUN npm install -g @anthropic-ai/claude-code @openai/codex @microwiseai/snapshot
+RUN npm install -g @anthropic-ai/claude-code @openai/codex @microwiseai/snapshot @glpkg/cli
 
 # `snapshot install @ist/beta` pulls the ist bundle from the PUBLIC snapshot
 # registry anonymously (verified: no token required). Baking it here means the
 # Prebuild caches it and re-opening a Codespace is fast.
 RUN snapshot install @ist/beta
 
-# Sanity: fail the build early if the ist CLI or an AI CLI didn't land.
-RUN isesh --version && claude --version && codex --version
+# The IST UI (`ist-ui`, port 7788): public, no token needed. glpkg resolves the
+# registry itself — no .npmrc is written here.
+RUN glpkg install -g @ist/ist-control-ui --group microwiseai
 
-# Non-fatal: the IST UI (`ist-ui`, @ist/ist-control-ui) joins the @ist/beta
-# snapshot later. Until then this only prints a note — never breaks the build.
-RUN ist-ui --version || echo "ist-ui not in snapshot yet"
+# Sanity: fail the build early if the ist CLI, an AI CLI or the UI didn't land.
+RUN isesh --version && claude --version && codex --version && ist-ui --version

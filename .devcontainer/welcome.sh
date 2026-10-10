@@ -11,7 +11,7 @@ cat <<'BANNER'
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 
-  isesh / snapshot / claude-code / codex are already installed in this image.
+  isesh / ist-ui / snapshot / claude-code / codex are already installed in this image.
 
   ─────────────────────────────────────────────────────────────────
   START HERE:  README.md  →  workshops/README.md
@@ -50,7 +50,7 @@ if command -v ist-ui >/dev/null 2>&1; then
   echo "     Asks for a token? Open the URL from ist-ui url. Trouble? ist-ui status"
   echo "  CLI fallback: isesh start project-mgr -w ./workshops/00-quicktool/project"
 else
-  echo "  The IST UI isn't in this image yet — use the CLI flow:"
+  echo "  ist-ui not found — use the CLI flow:"
   echo "     isesh start project-mgr -w ./workshops/00-quicktool/project"
 fi
 echo ""
