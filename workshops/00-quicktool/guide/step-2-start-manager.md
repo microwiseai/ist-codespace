@@ -32,17 +32,17 @@ The IST UI opens automatically in a browser tab when the Codespace starts (port
 2. **Managers** tab → **▶ Start a manager in this folder**.
 3. In the dialog, set the folder to the quicktool project:
    `/workspaces/ist-codespace/workshops/00-quicktool/project`
-   (or click **Use another folder** and paste it). Name it `mgr` and start it.
+   (or click **Use another folder** and paste it). Keep the suggested name (e.g. `project-mgr`) or pick any name — the prompt works with whatever the manager is called. Start it.
 
 <details>
 <summary>CLI equivalent (works even if the UI isn't installed yet)</summary>
 
 ```bash
 cd /workspaces/ist-codespace
-isesh start mgr -w ./workshops/00-quicktool/project
+isesh start project-mgr -w ./workshops/00-quicktool/project
 ```
 
-This starts a new AI session named `mgr` with the quicktool `project/` folder as its workspace.
+This starts a new AI session named `project-mgr` (any name works) with the quicktool `project/` folder as its workspace.
 </details>
 
 ## Give It the Manager Prompt
@@ -68,6 +68,6 @@ You just kick it off. The manager handles the rest.
 isesh list
 ```
 
-You should see `mgr` in the list with status `active` (it also shows as running in the UI's **Managers** tab).
+You should see your manager (e.g. `project-mgr`) in the list with status `active` (it also shows as running in the UI's **Managers** tab).
 
 Next: [Step 3: Watch workers get created](step-3-create-workers.md)

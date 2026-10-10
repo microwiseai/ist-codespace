@@ -7,10 +7,10 @@
 In a separate terminal:
 
 ```bash
-smon watch 'mgr-*' -n mgr -d
+smon watch 'project-mgr-*' -n project-mgr -d   # use your manager's name
 ```
 
-This starts `smon` in the background. It tracks the state of every session matching `mgr-*` and relays it to the manager session `mgr` (`-n mgr`): when a worker goes idle, hits a permission request that needs a decision, or exits, the manager is told right away instead of having to poll. `smon` reports to the manager, not to you.
+This starts `smon` in the background. It tracks the state of every session matching `project-mgr-*` and relays it to the manager session `project-mgr` (`-n project-mgr`): when a worker goes idle, hits a permission request that needs a decision, or exits, the manager is told right away instead of having to poll. `smon` reports to the manager, not to you.
 
 To watch the sessions yourself, tail the worker logs below. If you ran `detector-agent login`, you can also see live session status in the web dashboard at https://ism.microwiseai.com.
 
@@ -20,12 +20,12 @@ Want to see exactly what a worker is doing? Open more terminals:
 
 ```bash
 # Watch the core framework worker
-ilogsession tail mgr-core
+ilogsession tail project-mgr-core
 ```
 
 ```bash
 # Watch the commands worker
-ilogsession tail mgr-commands
+ilogsession tail project-mgr-commands
 ```
 
 ## What You're Seeing
@@ -47,7 +47,7 @@ If a worker seems stuck:
 isesh list
 
 # Send it a nudge via the manager
-imessenger send mgr "Check on mgr-core status"
+imessenger send project-mgr "Check on project-mgr-core status"
 ```
 
 Next: [Step 5: Test what was built](step-5-review-test.md)

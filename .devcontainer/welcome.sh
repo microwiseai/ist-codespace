@@ -48,10 +48,10 @@ if command -v ist-ui >/dev/null 2>&1; then
   url="$(ist-ui url 2>/dev/null)" && [ -n "$url" ] && echo "     URL: $url"
   echo "     Reopen: Ports panel → 7788 → globe icon, or run: ist-ui url"
   echo "     Trouble? ist-ui status  (log: ~/.cache/ist-codespace/start-ui.log)"
-  echo "  CLI fallback: isesh start mgr -w ./workshops/00-quicktool/project"
+  echo "  CLI fallback: isesh start project-mgr -w ./workshops/00-quicktool/project"
 else
   echo "  The IST UI isn't in this image yet — use the CLI flow:"
-  echo "     isesh start mgr -w ./workshops/00-quicktool/project"
+  echo "     isesh start project-mgr -w ./workshops/00-quicktool/project"
 fi
 echo ""
 

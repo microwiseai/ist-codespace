@@ -70,37 +70,39 @@ tab? **Ports** panel → `7788` → globe icon, or run `ist-ui url`.
 1. **Setup** tab — confirm your AI CLI is logged in.
 2. **Managers** tab → **▶ Start a manager in this folder**.
 3. Set the folder to `/workspaces/ist-codespace/workshops/02-converter-kit/project`
-   (or **Use another folder** and paste it). Name the manager **`conv`** and start it.
+   (or **Use another folder** and paste it). Keep the suggested name (e.g. `project-mgr`) or pick any name — the prompt works with whatever the manager is called. Start it.
 
 <details>
 <summary>CLI equivalent</summary>
 
 ```bash
 cd /workspaces/ist-codespace
-isesh start conv -w ./workshops/02-converter-kit/project
-isesh list          # conv → active
+isesh start project-mgr -w ./workshops/02-converter-kit/project
+isesh list          # project-mgr → active
 ```
 </details>
 
 ### 3. Paste the manager prompt (1 min)
 
 Copy all of [`project/manager-prompt.md`](project/manager-prompt.md) (everything below the
-`---`) and paste it into the `conv` session (attach from the UI, or `isesh attach conv`).
+`---`) and paste it into the manager session (attach from the UI, or `isesh attach <manager>`).
 
 ### 4. Watch the team work (45–60 min)
 
+Workers are named after your manager — `<manager>` below is its name (e.g. `project-mgr`).
+
 | Phase | Workers | What happens |
 |-------|---------|-------------|
-| 1 | `conv-core` | `Doc` model, format detection, Markdown/text renderers, CLI, README, stub parsers |
-| 2 | `conv-hwpx` + `conv-hwp` (parallel) | HWPX: unzip + XML. HWP: CFB container, raw-deflate streams, binary records, UTF-16 text with control codes |
+| 1 | `<manager>-core` | `Doc` model, format detection, Markdown/text renderers, CLI, README, stub parsers |
+| 2 | `<manager>-hwpx` + `<manager>-hwp` (parallel) | HWPX: unzip + XML. HWP: CFB container, raw-deflate streams, binary records, UTF-16 text with control codes |
 | 3 | manager (+ you) | Runs everything on your documents, checks the acceptance criteria, routes bugs |
 
 <details>
 <summary>CLI monitoring</summary>
 
 ```bash
-smon watch 'conv-*' -n conv -d     # relay worker state to the manager
-ilogsession tail conv-hwp          # the binary parser is the most interesting log
+smon watch '<manager>-*' -n <manager> -d     # relay worker state to the manager
+ilogsession tail <manager>-hwp         # the binary parser is the most interesting log
 isesh list
 ```
 </details>

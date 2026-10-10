@@ -1,9 +1,14 @@
 # TDA Manager Prompt for hwpconv
 
 Paste this entire block into your manager session after starting it.
-(The prompt assumes the manager is named `conv`; workers are named `conv-*`.)
 
 ---
+
+> **Session names:** below, `<ME>` means **your own session name** — it's in your
+> manager system prompt (or run `basename "$(isesh state path)" .json`). Replace `<ME>` with it
+> everywhere before running a command. Name every worker `<ME>-<role>`, and always start
+> workers with `--state manager=<ME>` — that's how the IST UI's Managers tab knows they
+> are yours.
 
 You are a TDA manager building **hwpconv**, a Node/TypeScript CLI + library that converts `.hwp` (HWP 5.0) and `.hwpx` (OWPML) documents to Markdown and plain text. The product spec is in `project-brief.md` in the current directory. Read all of it first — the **Format notes**, the **Doc model** (the contract between workers) and the **Acceptance Criteria** matter most.
 
@@ -20,11 +25,11 @@ Ground rules for every worker:
 ## Phase 1: Core — model, detection, renderers, CLI
 
 ```bash
-isesh start conv-core -w .
+isesh start <ME>-core -w . --state manager=<ME>
 ```
 
 ```bash
-imessenger send conv-core "Build the hwpconv core. Read project-brief.md (Library API, Markdown output rules, CLI, Architecture).
+imessenger send <ME>-core "Build the hwpconv core. Read project-brief.md (Library API, Markdown output rules, CLI, Architecture).
 You own: src/model.ts, src/detect.ts, src/render/*, src/index.ts, src/cli.ts, test/core*.test.ts, test/render*.test.ts, README.md.
 1. npm install.
 2. model.ts: Doc/Block exactly as in the spec.
@@ -39,15 +44,15 @@ Reply [COMPLETE] when done."
 
 ## Phase 2 (parallel): the two parsers
 
-Once conv-core is complete, start both parser workers and send both tasks.
+Once <ME>-core is complete, start both parser workers and send both tasks.
 
 ```bash
-isesh start conv-hwpx -w .
-isesh start conv-hwp -w .
+isesh start <ME>-hwpx -w . --state manager=<ME>
+isesh start <ME>-hwp -w . --state manager=<ME>
 ```
 
 ```bash
-imessenger send conv-hwpx "Implement parseHwpx in src/hwpx/. Read project-brief.md: 'HWPX (zip + XML)', Doc model, Acceptance Criteria.
+imessenger send <ME>-hwpx "Implement parseHwpx in src/hwpx/. Read project-brief.md: 'HWPX (zip + XML)', Doc model, Acceptance Criteria.
 You own: src/hwpx/** and test/hwpx*.test.ts (+ test/helpers/hwpx*.ts).
 1. Unzip with fflate, read Contents/content.hpf for section order (fallback: section*.xml sorted numerically).
 2. Parse with @xmldom/xmldom; match by namespace URI + local name, not prefix.
@@ -59,9 +64,9 @@ Reply [COMPLETE] when done."
 ```
 
 ```bash
-imessenger send conv-hwp "Implement parseHwp in src/hwp/. Read project-brief.md: 'HWP 5.0 (binary)', Doc model, Acceptance Criteria.
+imessenger send <ME>-hwp "Implement parseHwp in src/hwp/. Read project-brief.md: 'HWP 5.0 (binary)', Doc model, Acceptance Criteria.
 You own: src/hwp/** and test/hwp*.test.ts (+ test/helpers/hwp*.ts).
-1. cfb to open the container; FileHeader: signature, version, flags (compressed / encrypted / distribution). Encrypted or distribution → throw an error the CLI maps to exit code 3 (agree the error class with conv-core via me if needed).
+1. cfb to open the container; FileHeader: signature, version, flags (compressed / encrypted / distribution). Encrypted or distribution → throw an error the CLI maps to exit code 3 (agree the error class with <ME>-core via me if needed).
 2. node:zlib inflateRawSync for compressed DocInfo and BodyText/SectionN (all sections, in order).
 3. Record reader (tagId/level/size, 0xFFF extended size). PARA_TEXT decoding: UTF-16LE with char / inline / extended control characters exactly as in the spec (tab → \\t, 10 → newline).
 4. Tables: CTRL_HEADER 'tbl ' → TABLE → LIST_HEADER per cell → cell paragraphs (use record levels to know where a cell ends). Spans: text in top-left.
@@ -89,7 +94,7 @@ Walk through every item of the **Acceptance Criteria**. Show the user one conver
 
 ```bash
 isesh list
-imessenger send conv-core "Status?"
-imessenger send conv-hwpx "Status?"
-imessenger send conv-hwp "Status?"
+imessenger send <ME>-core "Status?"
+imessenger send <ME>-hwpx "Status?"
+imessenger send <ME>-hwp "Status?"
 ```

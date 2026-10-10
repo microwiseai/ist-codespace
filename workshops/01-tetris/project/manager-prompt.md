@@ -1,9 +1,14 @@
 # TDA Manager Prompt for ist-tetris
 
 Paste this entire block into your manager session after starting it.
-(The prompt assumes the manager is named `tetris`; workers are named `tetris-*`.)
 
 ---
+
+> **Session names:** below, `<ME>` means **your own session name** — it's in your
+> manager system prompt (or run `basename "$(isesh state path)" .json`). Replace `<ME>` with it
+> everywhere before running a command. Name every worker `<ME>-<role>`, and always start
+> workers with `--state manager=<ME>` — that's how the IST UI's Managers tab knows they
+> are yours.
 
 You are a TDA manager building **ist-tetris**, a browser Tetris game. The product spec is in `project-brief.md` in the current directory. Read it first — especially **Architecture** and **Game API (contract between workers)**: workers build against that contract in parallel.
 
@@ -20,12 +25,12 @@ Ground rules for every worker:
 Create both workers, then send both tasks.
 
 ```bash
-isesh start tetris-engine -w .
-isesh start tetris-tests -w .
+isesh start <ME>-engine -w . --state manager=<ME>
+isesh start <ME>-tests -w . --state manager=<ME>
 ```
 
 ```bash
-imessenger send tetris-engine "Implement the pure game engine for ist-tetris. Read project-brief.md (Features, Architecture, Game API).
+imessenger send <ME>-engine "Implement the pure game engine for ist-tetris. Read project-brief.md (Features, Architecture, Game API).
 You own: src/game/pieces.js, src/game/board.js, src/game/bag.js, src/game/game.js.
 1. pieces.js: the 7 tetrominoes (I O T S Z J L) as rotation states (4 cells each) + a color per piece.
 2. board.js: createBoard() 20x10 of null; collides(board, piece); lockPiece(board, piece); clearLines(board) -> { board, cleared }.
@@ -36,24 +41,24 @@ Reply [COMPLETE] when done."
 ```
 
 ```bash
-imessenger send tetris-tests "Write the unit tests for the ist-tetris game engine. Read project-brief.md (Game API, Success Criteria). The engine is being written in parallel by tetris-engine against the same API — write tests against the CONTRACT, not its code.
+imessenger send <ME>-tests "Write the unit tests for the ist-tetris game engine. Read project-brief.md (Game API, Success Criteria). The engine is being written in parallel by <ME>-engine against the same API — write tests against the CONTRACT, not its code.
 You own: test/*.test.js only (node:test + node:assert, no dependencies).
 Cover: piece shapes (4 cells, rotation states, O doesn't rotate); collisions with walls/floor/locked cells; rotation + wall kicks; line clear (1 line and 4 lines); scoring table x (level+1); soft/hard drop points; level up every 10 lines and gravityMs(); 7-bag deals each piece exactly once per 7 with a seeded rng; game over on blocked spawn; actions are no-ops while paused or over.
 Use a deterministic rng (e.g. a small seeded LCG) and build board states directly where needed.
-When tetris-engine reports done (ask me), run npm test. For each failure decide: test wrong -> fix the test; engine wrong -> report it to me with the failing case.
+When <ME>-engine reports done (ask me), run npm test. For each failure decide: test wrong -> fix the test; engine wrong -> report it to me with the failing case.
 Reply [COMPLETE] with the pass/fail summary."
 ```
 
-When **tetris-engine** completes, tell **tetris-tests** to run the suite. Route any engine bugs back to tetris-engine. Phase 1 is done when `npm test` is green.
+When **<ME>-engine** completes, tell **<ME>-tests** to run the suite. Route any engine bugs back to <ME>-engine. Phase 1 is done when `npm test` is green.
 
 ## Phase 2: rendering, input and dev server
 
 ```bash
-isesh start tetris-ui -w .
+isesh start <ME>-ui -w . --state manager=<ME>
 ```
 
 ```bash
-imessenger send tetris-ui "Build the browser side of ist-tetris. Read project-brief.md (Features, Keyboard controls, Architecture, Tech Stack). The engine in src/game/ is done and tested — use it only through createGame(); don't edit src/game/ or test/.
+imessenger send <ME>-ui "Build the browser side of ist-tetris. Read project-brief.md (Features, Keyboard controls, Architecture, Tech Stack). The engine in src/game/ is done and tested — use it only through createGame(); don't edit src/game/ or test/.
 You own: index.html, src/render.js, src/input.js, src/main.js, scripts/serve.mjs.
 1. scripts/serve.mjs: zero-dependency static server (node:http) for the project folder on 0.0.0.0:8080, correct MIME types for .html/.js/.css, 404 otherwise. npm start runs it.
 2. index.html: board canvas, next-piece preview canvas, score/level/lines, a short controls legend, overlay text for ready / paused / game over.
@@ -80,7 +85,7 @@ Walk through the **Success Criteria** checklist in `project-brief.md`. Ask the u
 
 ```bash
 isesh list
-imessenger send tetris-engine "Status?"
-imessenger send tetris-tests "Status?"
-imessenger send tetris-ui "Status?"
+imessenger send <ME>-engine "Status?"
+imessenger send <ME>-tests "Status?"
+imessenger send <ME>-ui "Status?"
 ```

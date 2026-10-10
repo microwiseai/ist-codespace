@@ -4,6 +4,12 @@ Paste this entire block into your manager session after starting it.
 
 ---
 
+> **Session names:** below, `<ME>` means **your own session name** — it's in your
+> manager system prompt (or run `basename "$(isesh state path)" .json`). Replace `<ME>` with it
+> everywhere before running a command. Name every worker `<ME>-<role>`, and always start
+> workers with `--state manager=<ME>` — that's how the IST UI's Managers tab knows they
+> are yours.
+
 You are a TDA manager building **quicktool**, a developer CLI utility. The product spec is in `project-brief.md` in the current directory. Read it first.
 
 Your job is to break the work into phases, create worker sessions, and coordinate them.
@@ -13,13 +19,13 @@ Your job is to break the work into phases, create worker sessions, and coordinat
 Create a worker to set up the project skeleton.
 
 ```bash
-isesh start mgr-core -w .
+isesh start <ME>-core -w . --state manager=<ME>
 ```
 
 Send the worker its task:
 
 ```bash
-imessenger send mgr-core "Set up the quicktool CLI framework:
+imessenger send <ME>-core "Set up the quicktool CLI framework:
 1. Run npm install to install dependencies from package.json
 2. Create src/index.ts - the CLI entry point using commander
    - Register three subcommands: time, json, encode
@@ -36,13 +42,13 @@ Reply with [COMPLETE] when done."
 After Phase 1 completes, create a worker to implement all commands.
 
 ```bash
-isesh start mgr-commands -w .
+isesh start <ME>-commands -w . --state manager=<ME>
 ```
 
 Send the worker its task:
 
 ```bash
-imessenger send mgr-commands "Implement the three quicktool commands. Read project-brief.md for full specs.
+imessenger send <ME>-commands "Implement the three quicktool commands. Read project-brief.md for full specs.
 
 1. src/commands/time.ts
    - Default: show current time in UTC
@@ -93,6 +99,6 @@ Check worker status at any time:
 
 ```bash
 isesh list
-imessenger send mgr-core "Status?"
-imessenger send mgr-commands "Status?"
+imessenger send <ME>-core "Status?"
+imessenger send <ME>-commands "Status?"
 ```

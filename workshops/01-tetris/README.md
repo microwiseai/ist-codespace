@@ -53,41 +53,43 @@ tab? **Ports** panel → `7788` → globe icon, or run `ist-ui url`.
 1. **Setup** tab — confirm your AI CLI is logged in.
 2. **Managers** tab → **▶ Start a manager in this folder**.
 3. Set the folder to `/workspaces/ist-codespace/workshops/01-tetris/project`
-   (or **Use another folder** and paste it). Name the manager **`tetris`** and start it.
+   (or **Use another folder** and paste it). Keep the suggested name (e.g. `project-mgr`) or pick any name — the prompt works with whatever the manager is called. Start it.
 
 <details>
 <summary>CLI equivalent</summary>
 
 ```bash
 cd /workspaces/ist-codespace
-isesh start tetris -w ./workshops/01-tetris/project
-isesh list          # tetris → active
+isesh start project-mgr -w ./workshops/01-tetris/project
+isesh list          # project-mgr → active
 ```
 </details>
 
 ### 3. Paste the manager prompt (1 min)
 
 Copy all of [`project/manager-prompt.md`](project/manager-prompt.md) (everything below the
-`---`) and paste it into the `tetris` session (attach to it from the UI, or `isesh attach tetris`).
+`---`) and paste it into the manager session (attach to it from the UI, or `isesh attach <manager>`).
 
 ### 4. Watch the team work (30–40 min)
 
 The manager runs three phases:
 
+Workers are named after your manager — `<manager>` below is its name (e.g. `project-mgr`).
+
 | Phase | Workers | What happens |
 |-------|---------|-------------|
-| 1 | `tetris-engine` + `tetris-tests` (parallel) | Pure game engine and its unit tests, both from the Game API |
-| 2 | `tetris-ui` | `index.html`, canvas rendering, keyboard input, the dev server |
+| 1 | `<manager>-engine` + `<manager>-tests` (parallel) | Pure game engine and its unit tests, both from the Game API |
+| 2 | `<manager>-ui` | `index.html`, canvas rendering, keyboard input, the dev server |
 | 3 | manager | Runs the tests, checks the success criteria, asks you to play |
 
-Workers appear in the UI's **Managers** tab under `tetris`. To follow along in a terminal:
+Workers appear in the UI's **Managers** tab under your manager. To follow along in a terminal:
 
 <details>
 <summary>CLI monitoring</summary>
 
 ```bash
-smon watch 'tetris-*' -n tetris -d   # relay worker state (idle / permission / exit) to the manager
-ilogsession tail tetris-engine       # follow one worker's log
+smon watch '<manager>-*' -n <manager> -d   # relay worker state (idle / permission / exit) to the manager
+ilogsession tail <manager>-engine      # follow one worker's log
 isesh list
 ```
 </details>
