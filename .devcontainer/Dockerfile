@@ -27,3 +27,7 @@ RUN snapshot install @ist/beta
 
 # Sanity: fail the build early if the ist CLI or an AI CLI didn't land.
 RUN isesh --version && claude --version && codex --version
+
+# Non-fatal: the IST UI (`ist-ui`, @ist/ist-control-ui) joins the @ist/beta
+# snapshot later. Until then this only prints a note — never breaks the build.
+RUN ist-ui --version || echo "ist-ui not in snapshot yet"

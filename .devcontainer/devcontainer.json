@@ -1,28 +1,48 @@
 {
-  "name": "IST Workshop - Build a CLI with AI Agents",
+  "name": "IST Workshop - Build software with AI agent teams",
   "build": {
     "dockerfile": "Dockerfile"
   },
   "workspaceFolder": "/workspaces/ist-codespace",
   "remoteUser": "node",
 
-  // `detector-agent login` runs a loopback OAuth callback server on
+  // 9876: `detector-agent login` runs a loopback OAuth callback server on
   // 127.0.0.1:9876 (browser redirect_uri=http://127.0.0.1:9876/callback).
   // Forward it so the sign-in redirect reaches the container in Codespaces.
-  "forwardPorts": [9876],
+  //
+  // 7788: the IST UI (`ist-ui`), launched by postStartCommand. "openBrowser"
+  // (not "openPreview") because it is a full app the user works in for the
+  // whole workshop — a real browser tab has room, survives editor layout
+  // changes and keeps its own history; the Simple Browser preview is cramped
+  // and easy to close by accident.
+  "forwardPorts": [9876, 7788],
   "portsAttributes": {
     "9876": {
       "label": "IST detector-agent OAuth callback"
+    },
+    "7788": {
+      "label": "IST UI",
+      "onAutoForward": "openBrowser"
     }
   },
 
   // Everything heavy (claude-code, codex, snapshot, `snapshot install @ist/beta`) is
   // baked into the image via the Dockerfile, so Codespaces Prebuild caches it
-  // and re-opening is fast. postAttachCommand only prints the welcome/next-steps
-  // banner — it must stay lightweight because it runs on every attach.
+  // and re-opening is fast.
+  //
+  // postStartCommand starts the IST UI in the background on every container
+  // start (idempotent, non-blocking, never fails; log under ~/.cache/ist-codespace/).
+  // If `ist-ui` isn't in the image yet it just prints a note.
+  "postStartCommand": "bash .devcontainer/start-ui.sh",
+
+  // postAttachCommand only prints the welcome/next-steps banner — it must stay
+  // lightweight because it runs on every attach.
   "postAttachCommand": "bash .devcontainer/welcome.sh",
 
   "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md"]
+    },
     "vscode": {
       "extensions": []
     }

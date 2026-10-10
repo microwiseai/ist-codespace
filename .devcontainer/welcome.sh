@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 # Printed on every attach (postAttachCommand). Keep it fast — no installs here.
-set -e
+# no `set -e`: an attach banner must never fail
 
 cat <<'BANNER'
 
 ╔══════════════════════════════════════════════════════════════════╗
 ║                                                                  ║
 ║   Welcome to the IST Workshop 🎉                                 ║
-║   Build a CLI tool in ~30 min using AI agent sessions.           ║
+║   Build software with a team of AI agents.                       ║
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 
   isesh / snapshot / claude-code / codex are already installed in this image.
 
   ─────────────────────────────────────────────────────────────────
-  START HERE:  guide/README.md
+  START HERE:  README.md  →  workshops/README.md
   ─────────────────────────────────────────────────────────────────
 
   STEP 1 — Log in to your AI CLI (needed before agents can run).
@@ -32,14 +32,28 @@ cat <<'BANNER'
 
      detector-agent login         # interactive Google login, once
 
-  Then follow the workshop:
+  STEP 3 — Pick a workshop (workshops/README.md):
 
-     cat guide/README.md
-     isesh start mgr -w ./project
+     workshops/00-quicktool/      # ~30 min — a small CLI (start here)
+     workshops/01-tetris/         # ~60 min — browser Tetris
+     workshops/02-converter-kit/  # ~90 min — HWP/HWPX → Markdown converter
 
   Tip: a tmux-capable terminal is expected (tmux is installed).
 
 BANNER
+
+# Primary entry: the IST UI (port 7788). Fallback: the CLI. Never fails.
+if command -v ist-ui >/dev/null 2>&1; then
+  echo "  ★ IST UI — opens automatically in a browser tab (port 7788)."
+  url="$(ist-ui url 2>/dev/null)" && [ -n "$url" ] && echo "     URL: $url"
+  echo "     Reopen: Ports panel → 7788 → globe icon, or run: ist-ui url"
+  echo "     Trouble? ist-ui status  (log: ~/.cache/ist-codespace/start-ui.log)"
+  echo "  CLI fallback: isesh start mgr -w ./workshops/00-quicktool/project"
+else
+  echo "  The IST UI isn't in this image yet — use the CLI flow:"
+  echo "     isesh start mgr -w ./workshops/00-quicktool/project"
+fi
+echo ""
 
 # Show installed versions if available (non-fatal).
 if command -v isesh >/dev/null 2>&1; then
