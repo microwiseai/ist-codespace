@@ -50,13 +50,20 @@ detector-agent login
 
 ~30 minutes
 
+## Where things are
+
+- `project/` — the product spec (`project-brief.md`), the manager prompt (`manager-prompt.md`) and the starter config (`package.json`, `tsconfig.json`). This folder is the manager's workspace.
+- `guide/` — the step-by-step pages below.
+
+Other workshops: [index](../README.md).
+
 ## Workshop Steps
 
-1. [Explore the project](step-1-explore.md) - Understand what you're building
-2. [Start the manager](step-2-start-manager.md) - Launch a TDA manager session
-3. [Create workers](step-3-create-workers.md) - Watch the manager delegate work
-4. [Monitor progress](step-4-monitor.md) - See agents build in real-time
-5. [Review and test](step-5-review-test.md) - Try the finished CLI tool
-6. [What's next](step-6-whats-next.md) - Install IST on your own machine
+1. [Explore the project](guide/step-1-explore.md) - Understand what you're building
+2. [Start the manager](guide/step-2-start-manager.md) - Launch a TDA manager session
+3. [Create workers](guide/step-3-create-workers.md) - Watch the manager delegate work
+4. [Monitor progress](guide/step-4-monitor.md) - See agents build in real-time
+5. [Review and test](guide/step-5-review-test.md) - Try the finished CLI tool
+6. [What's next](guide/step-6-whats-next.md) - Install IST on your own machine
 
-Start with [Step 1: Explore the project](step-1-explore.md).
+Start with [Step 1: Explore the project](guide/step-1-explore.md).

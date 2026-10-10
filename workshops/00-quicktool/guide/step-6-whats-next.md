@@ -45,4 +45,9 @@ The same pattern works for any project:
 - **IST Documentation:** [docs.ist.microwiseai.com](https://docs.ist.microwiseai.com/)
 - **Feedback & questions:** [github.com/microwiseai/feedback](https://github.com/microwiseai/feedback) — Discussions (questions & ideas) / Issues (bugs)
 
+## More Workshops
+
+- [01 — Build Tetris with IST](../../01-tetris/README.md)
+- [02 — Build a converter kit with IST (HWP/HWPX → Markdown)](../../02-converter-kit/README.md)
+
 Thanks for completing the workshop!

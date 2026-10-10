@@ -5,7 +5,7 @@
 ## Build the Project
 
 ```bash
-cd project
+cd /workspaces/ist-codespace/workshops/00-quicktool/project
 npm run build
 ```
 

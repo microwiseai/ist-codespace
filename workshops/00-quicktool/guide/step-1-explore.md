@@ -4,9 +4,10 @@
 
 ## Read the Product Spec
 
+From the repo root (`/workspaces/ist-codespace`):
+
 ```bash
-cd project
-cat project-brief.md
+cat workshops/00-quicktool/project/project-brief.md
 ```
 
 This is the spec for **quicktool**, a CLI with three commands:
@@ -20,7 +21,7 @@ This is the spec for **quicktool**, a CLI with three commands:
 ## Check the Starter Files
 
 ```bash
-ls project/
+ls workshops/00-quicktool/project/
 ```
 
 You'll see:
