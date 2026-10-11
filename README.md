@@ -7,11 +7,24 @@ split the work across AI *worker* sessions that build real software. Everything
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/microwiseai/ist-codespace?quickstart=1)
 
-## The IST UI opens automatically
+## Open the IST UI
 
-When the Codespace starts, the **IST UI** launches in the background and opens in a new
-browser tab (forwarded port **7788**, labelled *IST UI*). It's the main entry point, with
-two tabs:
+When the Codespace starts, the **IST UI** server starts automatically in the background
+(forwarded port **7788**, labelled *IST UI*). The Codespace also tries to open it in a new
+browser tab, but browsers often block that pop-up. **If no IST UI tab opened, open it
+yourself:**
+
+- in the terminal, run `ist-ui`. It prints the URL (and starts the server if it isn't
+  running). Click the `https://…-7788…` link it prints, **or**
+- **Ports** panel → `7788` → globe icon (*Open in Browser*).
+
+```bash
+ist-ui         # starts it if needed and prints the URL
+ist-ui url     # just prints https://<your-codespace>-7788.<forwarding-domain>/
+```
+
+Use the same steps whenever you lose the tab. The IST UI is the main entry point, with two
+tabs:
 
 - **Setup** — sign-ins and background services: **IST account (detector-agent)**,
   **Claude Code**, **Codex CLI**, and the **detector-agent** background agent. You can log in
@@ -22,15 +35,12 @@ two tabs:
   manager with **▶ Start** / **■ Stop**, **Copy attach command** (paste it into a terminal to
   talk to the manager) and its worker count. Once you're logged in, the UI opens here.
 
-**Reopen it:** **Ports** panel → `7788` → globe icon (*Open in Browser*), or in a terminal:
-
-```bash
-ist-ui url     # prints https://<your-codespace>-7788.<forwarding-domain>/
-ist-ui         # starts it if needed and prints the URL
-```
-
 **Troubleshooting**
 
+- **No IST UI tab opened at start** — this is normal: the browser blocked the pop-up, but
+  the server is already running. Open it with `ist-ui` or **Ports** → `7788` → globe icon
+  (see above). If your browser shows a "pop-up blocked" icon in the address bar, you can
+  allow pop-ups for `*.github.dev`.
 - **The page asks for a token** — you opened a `localhost`/`127.0.0.1` address. Run
   `ist-ui url` and open the `https://…-7788…` address it prints instead.
 - **Nothing on port 7788** — `ist-ui status`. Restart with `ist-ui stop` then `ist-ui`.

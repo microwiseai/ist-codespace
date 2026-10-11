@@ -64,9 +64,11 @@ the real-document check in step 5.
 
 ### 2. Start the manager — in the IST UI (2 min)
 
-The IST UI opens in a browser tab when the Codespace starts (port **7788**). It opens on the **Setup** tab
+The IST UI server starts automatically when the Codespace starts (port **7788**). If no IST UI
+tab opened (browsers often block the pop-up), run `ist-ui` in a terminal and click the URL it
+prints, or **Ports** panel → `7788` → globe icon. It opens on the **Setup** tab
 while Claude Code / Codex still needs a login (the tab shows a **!** badge), otherwise on
-**Managers**. Lost the tab? **Ports** panel → `7788` → globe icon, or run `ist-ui url`.
+**Managers**. Lost the tab? Same steps: `ist-ui`, or **Ports** → `7788` → globe icon.
 
 1. **Setup** tab — the **Claude Code** or **Codex CLI** card should say **Ready**; if not,
    log in right there. (The **IST account (detector-agent)** card is optional — it enables

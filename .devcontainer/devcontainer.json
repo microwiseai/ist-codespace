@@ -14,7 +14,9 @@
   // (not "openPreview") because it is a full app the user works in for the
   // whole workshop — a real browser tab has room, survives editor layout
   // changes and keeps its own history; the Simple Browser preview is cramped
-  // and easy to close by accident.
+  // and easy to close by accident. The auto-open is best-effort: browsers often
+  // block it as a pop-up, so the README tells users to run `ist-ui` or use
+  // Ports → 7788 → globe icon if no tab appears.
   "forwardPorts": [9876, 7788],
   "portsAttributes": {
     "9876": {
