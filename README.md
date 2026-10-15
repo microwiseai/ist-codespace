@@ -1,3 +1,5 @@
+<p align="center"><b>English</b> | <a href="./README.ko.md">한국어</a></p>
+
 # IST Workshop Codespace
 
 A ready-to-use GitHub Codespace for trying **IST (Integrated Session Tools)**: you
