@@ -24,7 +24,11 @@ RUN npm install -g @anthropic-ai/claude-code @openai/codex @microwiseai/snapshot
 # `snapshot install @ist/beta` pulls the ist bundle from the PUBLIC snapshot
 # registry anonymously (verified: no token required). Baking it here means the
 # Prebuild caches it and re-opening a Codespace is fast.
-RUN snapshot install @ist/beta
+# The output is kept in the image: the install ledger only lists packages that
+# succeeded, so smoke-test.sh reads this log to catch partial failures
+# ("Installed: N/M", "Failed:") even if the CLI ever exits 0 on them.
+RUN mkdir -p /home/node/.cache/ist-codespace \
+    && bash -o pipefail -c 'snapshot install @ist/beta 2>&1 | tee /home/node/.cache/ist-codespace/snapshot-install.log'
 
 # The IST UI (`ist-ui`, port 7788): public, no token needed. glpkg resolves the
 # registry itself — no .npmrc is written here.

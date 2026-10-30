@@ -1,0 +1,167 @@
+# Build → smoke-test → publish the Codespace image.
+#
+# Codespaces open from ghcr.io/microwiseai/ist-codespace:stable (devcontainer.json
+# "image"), never from a live Dockerfile build. This workflow is the ONLY thing
+# that moves :stable, and it moves it only after .devcontainer/smoke-test.sh
+# passes against the freshly built image. A broken upstream package therefore
+# turns into a failed run + an open "image-build-failure" issue, while users
+# keep getting the last good image. The next green run closes the issue and
+# promotes the new image automatically.
+#
+# Tags pushed on success (main only):
+#   :<git-sha>            exact source revision
+#   :<YYYYMMDD>-<sha7>    human-readable build date
+#   :stable               what devcontainer.json pulls
+name: image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".devcontainer/**"
+      - ".github/workflows/image.yml"
+  schedule:
+    # Daily: the Dockerfile installs unpinned "latest" packages, so upstream
+    # changes must be re-verified even when this repo doesn't change.
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      promote:
+        description: "Push tags + move :stable if the smoke test passes (main only)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: image-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/ist-codespace
+  CANDIDATE: ist-codespace:candidate
+  FAILURE_LABEL: image-build-failure
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      packages: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: build
+        name: Build image (no cache — always re-resolve upstream packages)
+        run: |
+          set -o pipefail
+          docker build --pull --no-cache --progress=plain \
+            --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --label "org.opencontainers.image.description=IST Workshop Codespace image (smoke-tested)" \
+            -t "$CANDIDATE" .devcontainer 2>&1 | tee build.log
+
+      - id: smoke
+        name: Smoke test
+        run: |
+          set -o pipefail
+          docker run --rm -v "$PWD/.devcontainer:/smoke:ro" "$CANDIDATE" \
+            bash /smoke/smoke-test.sh 2>&1 | tee smoke.log
+
+      - id: promote
+        name: Push tags and promote :stable
+        if: >-
+          github.ref == 'refs/heads/main' &&
+          (github.event_name != 'workflow_dispatch' || inputs.promote)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          img="$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')"
+          date_tag="$(date -u +%Y%m%d)-${GITHUB_SHA::7}"
+          for t in "$GITHUB_SHA" "$date_tag" stable; do
+            docker tag "$CANDIDATE" "$img:$t"
+            docker push "$img:$t"
+          done
+          {
+            echo "### Published"
+            echo "- \`$img:stable\` = \`$img:$date_tag\` = \`$img:$GITHUB_SHA\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-logs-${{ github.run_id }}
+          path: |
+            build.log
+            smoke.log
+          if-no-files-found: ignore
+
+      # ---- failure reporting: one open issue per outage, updated per run ----
+      - name: Open / update failure issue
+        if: failure() && github.ref == 'refs/heads/main'
+        uses: actions/github-script@v7
+        env:
+          BUILD: ${{ steps.build.outcome }}
+          SMOKE: ${{ steps.smoke.outcome }}
+          PROMOTE: ${{ steps.promote.outcome }}
+        with:
+          script: |
+            const fs = require('fs');
+            const { owner, repo } = context.repo;
+            const label = process.env.FAILURE_LABEL;
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const step = process.env.BUILD !== 'success' ? 'build (docker build)'
+                       : process.env.SMOKE !== 'success' ? 'smoke test'
+                       : process.env.PROMOTE === 'failure' ? 'push / promote :stable'
+                       : 'unknown';
+            const logFile = step.startsWith('build') ? 'build.log' : 'smoke.log';
+            let tail = '';
+            try {
+              const lines = fs.readFileSync(logFile, 'utf8').split('\n');
+              const pick = logFile === 'smoke.log'
+                ? lines.filter(l => /FAIL|WARN|^==/.test(l)).slice(-40)
+                : lines.slice(-60);
+              tail = pick.join('\n').slice(-6000);
+            } catch (e) { tail = `(no ${logFile})`; }
+
+            const body = [
+              `**Failed step:** ${step}`,
+              `**Trigger:** ${context.eventName} @ \`${context.sha.slice(0, 7)}\``,
+              `**Run:** ${runUrl}`,
+              '',
+              '`:stable` was NOT changed — Codespaces keep using the last good image.',
+              '',
+              `<details><summary>${logFile} (tail)</summary>`,
+              '', '```', tail, '```', '', '</details>',
+            ].join('\n');
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: label });
+            } catch {
+              await github.rest.issues.createLabel({ owner, repo, name: label, color: 'B60205',
+                description: 'Codespace image build/smoke test failed; :stable unchanged' });
+            }
+            const open = await github.rest.issues.listForRepo({ owner, repo, labels: label, state: 'open', per_page: 1 });
+            if (open.data.length) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: open.data[0].number, body });
+              core.notice(`Updated issue #${open.data[0].number}`);
+            } else {
+              const { data } = await github.rest.issues.create({ owner, repo, labels: [label],
+                title: `Codespace image build failing (${step})`, body });
+              core.notice(`Opened issue #${data.number}`);
+            }
+
+      - name: Close failure issue after a green, promoted run
+        if: success() && steps.promote.outcome == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const open = await github.rest.issues.listForRepo({ owner, repo,
+              labels: process.env.FAILURE_LABEL, state: 'open', per_page: 100 });
+            for (const issue of open.data) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: issue.number,
+                body: `Fixed: build + smoke test passed and \`:stable\` was promoted to \`${context.sha.slice(0, 7)}\`.\n${runUrl}` });
+              await github.rest.issues.update({ owner, repo, issue_number: issue.number, state: 'closed', state_reason: 'completed' });
+            }

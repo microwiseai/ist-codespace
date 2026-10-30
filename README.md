@@ -127,4 +127,7 @@ workshops/
   devcontainer.json    # ports 7788 (IST UI) + 9876 (detector-agent login), start/attach hooks
   start-ui.sh          # postStartCommand: launches the IST UI in the background
   welcome.sh           # postAttachCommand: welcome banner
+  smoke-test.sh        # image gate: CLIs, full snapshot install, kits, IST UI HTTP, isesh/tmux
+.github/workflows/
+  image.yml            # build → smoke test → push ghcr.io/microwiseai/ist-codespace (:stable only on pass)
 ```
