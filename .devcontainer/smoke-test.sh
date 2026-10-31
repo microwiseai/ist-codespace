@@ -11,6 +11,7 @@
 #   3. required skit kits installed
 #   4. IST UI really starts (via start-ui.sh, the postStartCommand) and answers HTTP on 7788
 #   5. isesh can start / list / stop a tmux-backed session
+#   6. istate round-trip; `istate get <missing> --strict` exits 2
 #
 # Exit 0 only if every check passes. Each check prints "PASS:" / "FAIL:" / "WARN:".
 
@@ -18,8 +19,8 @@ set -u
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SNAPSHOT_LOG="${SNAPSHOT_LOG:-$HOME/.cache/ist-codespace/snapshot-install.log}"
 UI_PORT="${IST_UI_PORT:-7788}"
-REQUIRED_CMDS=(isesh itda skit snapshot claude codex ist-ui glpkg tmux curl)
-OPTIONAL_CMDS=(istate)
+REQUIRED_CMDS=(isesh itda istate skit snapshot claude codex ist-ui glpkg tmux curl)
+OPTIONAL_CMDS=()
 REQUIRED_KITS=(@ist/tda-kit @ist/messenger-kit @ist/smon-kit)
 
 fails=0
@@ -33,10 +34,10 @@ section "1. commands"
 for c in "${REQUIRED_CMDS[@]}"; do
   if command -v "$c" >/dev/null 2>&1; then pass "$c on PATH"; else fail "$c not on PATH"; fi
 done
-for c in "${OPTIONAL_CMDS[@]}"; do
+for c in "${OPTIONAL_CMDS[@]+"${OPTIONAL_CMDS[@]}"}"; do
   command -v "$c" >/dev/null 2>&1 && pass "$c on PATH" || warn "$c not on PATH (optional)"
 done
-for c in isesh itda skit snapshot claude codex ist-ui; do
+for c in isesh itda istate skit snapshot claude codex ist-ui; do
   command -v "$c" >/dev/null 2>&1 || continue
   if v="$(timeout 30 "$c" --version 2>&1)"; then pass "$c --version: $(echo "$v" | head -1)"
   else fail "$c --version exited non-zero: $(echo "$v" | head -3)"; fi
@@ -129,6 +130,24 @@ else
 fi
 isesh delete "$name" --all >/dev/null 2>&1 || true
 tmux kill-server >/dev/null 2>&1 || true
+
+# ---------------------------------------------------------------------------
+section "6. istate"
+if command -v istate >/dev/null 2>&1; then
+  k="smoke-test-$$"; v=''
+  if istate set "$k" ok --scope global --allow-global --reason smoke-test >/dev/null 2>&1 \
+     && v="$(istate get "$k" --strict --scope global 2>/dev/null)" && grep -q ok <<<"$v"; then
+    pass "istate set/get --strict round-trip"
+  else
+    fail "istate set/get round-trip failed (got: ${v:-<none>})"
+  fi
+  istate delete "$k" --scope global >/dev/null 2>&1 || true
+  istate get "$k-missing" --strict --scope global >/dev/null 2>&1; rc=$?
+  if [ "$rc" -eq 2 ]; then pass "istate get <missing> --strict exits 2"
+  else fail "istate get <missing> --strict exited $rc (want 2)"; fi
+else
+  fail "istate not on PATH — section skipped"
+fi
 
 # ---------------------------------------------------------------------------
 echo
