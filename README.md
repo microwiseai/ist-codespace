@@ -99,20 +99,32 @@ You paste a manager prompt into an AI session. The manager:
 
 No code writing. Just orchestration.
 
-## Speeding Up with Prebuilds
+## Updating the Image
 
-The devcontainer bakes the whole toolchain into the image, so a **Codespaces
-Prebuild** makes every "Open in Codespaces" fast. Repo/org owner, one time:
+A Codespace pulls the image pinned by digest in `.devcontainer/devcontainer.json`; it
+never builds the Dockerfile, and no CI builds or updates the image. The image that runs
+is the one you built and tested locally. After changing the pinned versions in
+`.devcontainer/Dockerfile`:
 
-1. Go to the repo on GitHub → **Settings → Codespaces → Prebuilds → Set up prebuild**
-   (org-wide: **Org Settings → Codespaces → Prebuilds**).
-2. Pick this repository and the branch (e.g. `main`).
-3. Choose region(s) near your users, then save.
+```bash
+docker build --pull --no-cache -t ist-codespace:candidate .devcontainer
+docker run --rm -v "$PWD/.devcontainer:/smoke:ro" ist-codespace:candidate bash /smoke/smoke-test.sh
 
-GitHub builds the image ahead of time and refreshes it on pushes that change
-`.devcontainer/**`. After the first prebuild, opening a Codespace uses the cache.
-(The IST UI is started by `postStartCommand`, which runs at container start — not
-during the prebuild — so prebuilds are unaffected.)
+# Run the candidate as a real dev container, then check start-ui.sh, welcome.sh, isesh, ist-ui, port 7788
+sed 's#"image": ".*"#"image": "ist-codespace:candidate"#' .devcontainer/devcontainer.json > /tmp/candidate.json
+npx @devcontainers/cli up --workspace-folder . --override-config /tmp/candidate.json
+
+# If everything passed (needs a docker login to ghcr.io)
+tag="$(date +%Y%m%d)-$(git rev-parse --short HEAD)"
+docker tag ist-codespace:candidate "ghcr.io/microwiseai/ist-codespace:$tag"
+docker push "ghcr.io/microwiseai/ist-codespace:$tag"   # prints digest: sha256:...
+```
+
+Then set `"image"` in `devcontainer.json` to `ghcr.io/microwiseai/ist-codespace@sha256:...`
+with that digest, commit and push.
+
+A Codespaces Prebuild is not needed, since nothing is built on open. It is optional and
+only saves the image pull.
 
 ## Project Structure
 
@@ -123,11 +135,9 @@ workshops/
   01-tetris/           # README + project/
   02-converter-kit/    # README + project/
 .devcontainer/
-  Dockerfile           # prebakes isesh / snapshot / claude-code / codex / ist-ui (via glpkg)
-  devcontainer.json    # ports 7788 (IST UI) + 9876 (detector-agent login), start/attach hooks
+  Dockerfile           # image recipe, pinned versions: isesh / snapshot / claude-code / codex / ist-ui (via glpkg)
+  devcontainer.json    # image digest, ports 7788 (IST UI) + 9876 (detector-agent login), start/attach hooks
   start-ui.sh          # postStartCommand: launches the IST UI in the background
   welcome.sh           # postAttachCommand: welcome banner
   smoke-test.sh        # image gate: CLIs, full snapshot install, kits, IST UI HTTP, isesh/tmux
-.github/workflows/
-  image.yml            # build → smoke test → push ghcr.io/microwiseai/ist-codespace (:stable only on pass)
 ```

@@ -3,8 +3,8 @@
 #
 #   docker run --rm -v "$PWD/.devcontainer:/smoke:ro" <image> bash /smoke/smoke-test.sh
 #
-# Used by .github/workflows/image.yml as the gate for promoting :stable, and
-# runnable locally against any candidate image. Covers what a workshop user
+# The local gate before pushing an image (README: "Updating the Image"); runs
+# against any candidate image. Covers what a workshop user
 # relies on without logging in to anything:
 #   1. CLIs on PATH (and they run)
 #   2. `snapshot install @ist/beta` fully succeeded (partial failure = failure)

@@ -1,8 +1,11 @@
 {
   "name": "IST Workshop - Build software with AI agent teams",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+
+  // Pinned by digest: a Codespace never builds the Dockerfile and never follows a
+  // moving tag. To update: build and test the image locally, `docker push` it, then
+  // replace this digest with the one the push prints (README: "Updating the Image").
+  "image": "ghcr.io/microwiseai/ist-codespace@sha256:ad861440cd1ed134c60716544cec1cbefa096df3bf3d1220e2219e33ff3b7519",
+
   "workspaceFolder": "/workspaces/ist-codespace",
   "remoteUser": "node",
 
@@ -29,9 +32,7 @@
   },
 
   // Everything heavy (claude-code, codex, snapshot, `snapshot install @ist/beta`,
-  // ist-ui via glpkg) is
-  // baked into the image via the Dockerfile, so Codespaces Prebuild caches it
-  // and re-opening is fast.
+  // ist-ui via glpkg) is already in the image above (recipe: Dockerfile).
   //
   // postStartCommand starts the IST UI in the background on every container
   // start (idempotent, non-blocking, never fails; log under ~/.cache/ist-codespace/).

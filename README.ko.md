@@ -96,20 +96,31 @@ https://ism.microwiseai.com 에서 세션을 실시간으로 볼 수 있습니�
 
 코드 작성은 필요 없습니다. 오케스트레이션만 하면 됩니다.
 
-## 프리빌드로 속도 높이기
+## 이미지 업데이트 방법
 
-devcontainer는 전체 툴체인을 이미지에 미리 포함하므로, **Codespaces Prebuild**를 설정하면
-"Open in Codespaces"가 매번 빨라집니다. 저장소/조직 소유자가 한 번만 설정하면 됩니다:
+Codespace는 `.devcontainer/devcontainer.json`에 digest로 고정된 이미지를 받아서 사용합니다.
+Dockerfile을 빌드하지 않으며, 이미지를 빌드하거나 갱신하는 CI도 없습니다. 로컬에서 빌드하고 테스트한
+이미지를 그대로 사용합니다. `.devcontainer/Dockerfile`의 고정 버전을 변경한 뒤:
 
-1. GitHub의 저장소 → **Settings → Codespaces → Prebuilds → Set up prebuild**로 이동합니다
-   (조직 전체: **Org Settings → Codespaces → Prebuilds**).
-2. 이 저장소와 브랜치(예: `main`)를 선택합니다.
-3. 사용자와 가까운 리전을 선택한 뒤 저장합니다.
+```bash
+docker build --pull --no-cache -t ist-codespace:candidate .devcontainer
+docker run --rm -v "$PWD/.devcontainer:/smoke:ro" ist-codespace:candidate bash /smoke/smoke-test.sh
 
-GitHub가 이미지를 미리 빌드하고, `.devcontainer/**`를 변경하는 push가 있을 때마다 갱신합니다.
-첫 프리빌드 이후에는 Codespace를 열 때 캐시를 사용합니다.
-(IST UI는 컨테이너 시작 시 실행되는 `postStartCommand`로 시작되며 프리빌드 중에는 실행되지 않으므로,
-프리빌드에는 영향이 없습니다.)
+# Run the candidate as a real dev container, then check start-ui.sh, welcome.sh, isesh, ist-ui, port 7788
+sed 's#"image": ".*"#"image": "ist-codespace:candidate"#' .devcontainer/devcontainer.json > /tmp/candidate.json
+npx @devcontainers/cli up --workspace-folder . --override-config /tmp/candidate.json
+
+# If everything passed (needs a docker login to ghcr.io)
+tag="$(date +%Y%m%d)-$(git rev-parse --short HEAD)"
+docker tag ist-codespace:candidate "ghcr.io/microwiseai/ist-codespace:$tag"
+docker push "ghcr.io/microwiseai/ist-codespace:$tag"   # prints digest: sha256:...
+```
+
+그런 다음 `devcontainer.json`의 `"image"`를 그 digest를 사용한
+`ghcr.io/microwiseai/ist-codespace@sha256:...`로 바꾸고 커밋한 뒤 push합니다.
+
+Codespace를 열 때 아무것도 빌드하지 않으므로 Codespaces Prebuild는 필요하지 않습니다. 선택 사항이며,
+이미지를 받는 시간만 줄여 줍니다.
 
 ## 프로젝트 구조
 
@@ -120,11 +131,9 @@ workshops/
   01-tetris/           # README + project/
   02-converter-kit/    # README + project/
 .devcontainer/
-  Dockerfile           # prebakes isesh / snapshot / claude-code / codex / ist-ui (via glpkg)
-  devcontainer.json    # ports 7788 (IST UI) + 9876 (detector-agent login), start/attach hooks
+  Dockerfile           # image recipe, pinned versions: isesh / snapshot / claude-code / codex / ist-ui (via glpkg)
+  devcontainer.json    # image digest, ports 7788 (IST UI) + 9876 (detector-agent login), start/attach hooks
   start-ui.sh          # postStartCommand: launches the IST UI in the background
   welcome.sh           # postAttachCommand: welcome banner
   smoke-test.sh        # image gate: CLIs, full snapshot install, kits, IST UI HTTP, isesh/tmux
-.github/workflows/
-  image.yml            # build → smoke test → push ghcr.io/microwiseai/ist-codespace (:stable only on pass)
 ```
