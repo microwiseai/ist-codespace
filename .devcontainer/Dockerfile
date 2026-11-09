@@ -34,7 +34,7 @@ RUN npm install -g \
 # succeeded, so smoke-test.sh reads this log to catch partial failures
 # ("Installed: N/M", "Failed:") even if the CLI ever exits 0 on them.
 RUN mkdir -p /home/node/.cache/ist-codespace \
-    && bash -o pipefail -c 'snapshot install @ist/beta@0.2.1 2>&1 | tee /home/node/.cache/ist-codespace/snapshot-install.log'
+    && bash -o pipefail -c 'snapshot install @ist/beta@0.3.0 2>&1 | tee /home/node/.cache/ist-codespace/snapshot-install.log'
 
 # The IST UI (`ist-ui`, port 7788): public, no token needed. glpkg resolves the
 # registry itself — no .npmrc is written here.
