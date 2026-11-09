@@ -65,13 +65,18 @@ New to IST? Start with **00**. Overview: [workshops/README.md](workshops/README.
 
 - A GitHub account
 - A way to authenticate an AI CLI (both are pre-installed):
-  - **Claude Code** — a Claude Pro/Max subscription (`claude login`) **or** an [Anthropic API key](https://console.anthropic.com/)
-  - **OpenAI Codex** — a ChatGPT plan (`codex login --device-auth`) **or** an [OpenAI API key](https://platform.openai.com/api-keys)
+  - **Claude Code** — a Claude Pro/Max subscription **or** an [Anthropic API key](https://console.anthropic.com/)
+  - **OpenAI Codex** — a ChatGPT plan **or** an [OpenAI API key](https://platform.openai.com/api-keys)
+
+  How to sign in: [Log in](#log-in).
 
 ## Log in
 
-Nothing is injected into the Codespace — you log in yourself. Easiest: the IST UI's
-**Setup** tab (**Claude Code** / **Codex CLI** cards). Or in a terminal:
+Nothing is injected into the Codespace — you log in yourself, once, in the IST UI's
+**Setup** tab: on the **Claude Code** or **Codex CLI** card, log in until it says **Ready**
+(the tab shows a **!** badge until then). You need just one of the two.
+
+**Alternative — terminal** (e.g. the IST UI won't open, or you'd rather use an API key):
 
 ```bash
 # Claude Code

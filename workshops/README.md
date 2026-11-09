@@ -14,7 +14,7 @@ New to IST? Start with **00**.
 
 ## The same flow every time
 
-1. Log in to your AI CLI once (see the [root README](../README.md#log-in)).
+1. Log in to your AI CLI once — in the IST UI **Setup** tab (details and terminal alternative: [root README](../README.md#log-in)).
 2. In the **IST UI** (port 7788; no tab opened? run `ist-ui` and click the URL): **Setup** tab — make sure Claude Code
    or Codex says **Ready** → **Managers** tab → **＋ New manager** with **Folder** = the
    workshop's `project/` folder → **▶ Start** → **Copy attach command** into a terminal.

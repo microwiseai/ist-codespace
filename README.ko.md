@@ -63,13 +63,18 @@ IST가 처음이라면 **00**부터 시작하세요. 개요: [workshops/README.m
 
 - GitHub 계정
 - AI CLI 인증 수단 (둘 다 미리 설치되어 있음):
-  - **Claude Code** — Claude Pro/Max 구독 (`claude login`) **또는** [Anthropic API 키](https://console.anthropic.com/)
-  - **OpenAI Codex** — ChatGPT 플랜 (`codex login --device-auth`) **또는** [OpenAI API 키](https://platform.openai.com/api-keys)
+  - **Claude Code** — Claude Pro/Max 구독 **또는** [Anthropic API 키](https://console.anthropic.com/)
+  - **OpenAI Codex** — ChatGPT 플랜 **또는** [OpenAI API 키](https://platform.openai.com/api-keys)
+
+  로그인 방법: [로그인](#로그인).
 
 ## 로그인
 
-Codespace에는 어떤 자격 증명도 미리 주입되지 않으므로 직접 로그인해야 합니다. 가장 쉬운 방법은
-IST UI의 **Setup** 탭(**Claude Code** / **Codex CLI** 카드)을 이용하는 것입니다. 또는 터미널에서:
+Codespace에는 어떤 자격 증명도 미리 주입되지 않으므로 직접 한 번 로그인해야 합니다. IST UI의
+**Setup** 탭에서 **Claude Code** 또는 **Codex CLI** 카드로 로그인해 **Ready**가 표시되게 하세요
+(그 전까지 탭에 **!** 배지가 표시됨). 둘 중 하나만 있으면 됩니다.
+
+**대안 — 터미널** (예: IST UI가 열리지 않을 때, 또는 API 키를 쓰려는 경우):
 
 ```bash
 # Claude Code

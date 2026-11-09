@@ -2,28 +2,7 @@
 
 **Goal:** Launch a TDA manager session that will coordinate the build.
 
-## Log In to Your AI CLI
-
-If you haven't already, authenticate the AI CLI you'll use. **Claude Code:**
-
-```bash
-claude login                      # Claude Pro/Max subscription (no API key)
-# ...or, with an API key instead:
-export ANTHROPIC_API_KEY=sk-ant-...
-```
-
-**OpenAI Codex:**
-
-```bash
-codex login --device-auth         # ChatGPT plan, device-code sign-in
-# ...or, with an API key instead:
-printenv OPENAI_API_KEY | codex login --with-api-key
-```
-
-(Optional) To enable auto-approval and the web dashboard, run the one-time Google
-sign-in: `detector-agent login`.
-
-## Start the Manager Session — in the IST UI
+## Log In and Start the Manager — in the IST UI
 
 The IST UI server starts automatically when the Codespace starts (port **7788**). If no IST UI
 tab opened (browsers often block the pop-up), run `ist-ui` in a terminal and click the URL it
@@ -33,7 +12,8 @@ while Claude Code / Codex still needs a login (the tab shows a **!** badge), oth
 
 1. **Setup** tab — the **Claude Code** or **Codex CLI** card should say **Ready**; if not,
    log in right there. (The **IST account (detector-agent)** card is optional — it enables
-   auto-approval and the web dashboard.)
+   auto-approval and the web dashboard.) IST UI won't open, or you want an API key? Log in
+   from a terminal instead — see [Log in](../../../README.md#log-in) in the root README.
 2. **Managers** tab → **＋ New manager**. (No managers yet? Under the big
    **▶ Start a manager in this folder** button, click **Use another folder**.)
 3. In **Start a new manager**, set **Folder (full path)** to

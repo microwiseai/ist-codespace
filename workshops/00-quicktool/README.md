@@ -16,35 +16,13 @@ Welcome to the IST Workshop. You'll use AI agent sessions to build **quicktool**
 ## Log In to Your CLI AI Tool
 
 The CLI AI tools come pre-installed in this Codespace, but you need to log in
-yourself before the agents can run. Open a terminal and start your tool:
+yourself (no keys are baked in). You do it once in the IST UI's **Setup** tab —
+log in on the **Claude Code** or **Codex CLI** card until it says **Ready**.
+[Step 2](guide/step-2-start-manager.md) walks you through it.
 
-```bash
-claude
-```
-
-Follow the login prompt (a Claude Max subscription works — no API key required).
-You can also run `claude login` directly, or use an API key instead with
-`export ANTHROPIC_API_KEY=sk-ant-...`.
-
-**Using OpenAI Codex instead?** Codex is pre-installed too. Log in with your
-ChatGPT plan using the device-code flow (works inside a Codespace):
-
-```bash
-codex login --device-auth
-```
-
-Or use an OpenAI API key: `printenv OPENAI_API_KEY | codex login --with-api-key`
-(after `export OPENAI_API_KEY=sk-...`). No keys are baked into this Codespace —
-you always log in yourself.
-
-**Optional — auto-approval & web dashboard:** once you link this Codespace to
-your IST account with a one-time interactive Google sign-in, `smon` can
-auto-approve routine agent prompts and pass everything else to the manager, and
-you can watch your sessions live in the web dashboard at https://ism.microwiseai.com:
-
-```bash
-detector-agent login
-```
+Terminal login (if the IST UI won't open, or you want an API key) and the optional
+**IST account (detector-agent)** sign-in for auto-approval and the web dashboard:
+see [Log in](../../README.md#log-in) in the root README.
 
 ## Time
 
